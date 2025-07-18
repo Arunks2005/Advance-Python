@@ -93,6 +93,7 @@ elif menu == "📁 Export Data":
     st.subheader("📁 Export Entries to Excel")
     df = st.session_state.records
 
+    export_filename = "mental_wellness_log_20250704_172222.xlsx"
 
     if df.empty:
         st.warning("⚠️ No entries to export.")
