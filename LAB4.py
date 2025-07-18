@@ -1,11 +1,9 @@
-# mindease_app.py
 
 import streamlit as st
 import pandas as pd
 from datetime import datetime
 import os
 
-# ---------- CONFIG & SETUP ----------
 st.set_page_config(
     page_title="MindEase: Wellness Tracker",
     page_icon="💆",
@@ -26,7 +24,6 @@ def check_status(minutes):
 def get_status_color(status):
     return "green" if status == "Healthy" else "red"
 
-# ---------- SESSION STATE ----------
 if "records" not in st.session_state:
     if os.path.exists(EXCEL_FILENAME):
         st.session_state.records = pd.read_excel(EXCEL_FILENAME)
@@ -36,11 +33,9 @@ if "records" not in st.session_state:
             "Offline Time (min)", "Frequency", "Status"
         ])
 
-# ---------- SIDEBAR ----------
 st.sidebar.header("Navigation")
 menu = st.sidebar.radio("Choose View", ["➕ Add Entry", "📊 Activity Overview", "📁 Export Data", "🗑️ Clear Entries", "ℹ️ About App"])
 
-# ---------- ADD ENTRY ----------
 if menu == "➕ Add Entry":
     st.subheader("➕ Log a New Wellness Entry")
 
@@ -74,7 +69,6 @@ if menu == "➕ Add Entry":
             else:
                 st.error("❌ Please fill all fields before submitting.")
 
-# ---------- ACTIVITY OVERVIEW ----------
 elif menu == "📊 Activity Overview":
     st.subheader("📊 Wellness Activity Summary")
     df = st.session_state.records
@@ -95,27 +89,27 @@ elif menu == "📊 Activity Overview":
         st.markdown("### 🧾 All Logged Entries")
         st.dataframe(df, use_container_width=True)
 
-# ---------- EXPORT DATA ----------
 elif menu == "📁 Export Data":
     st.subheader("📁 Export Entries to Excel")
     df = st.session_state.records
+
+    export_filename = "mental_wellness_log_20250704_172222.xlsx"
 
     if df.empty:
         st.warning("⚠️ No entries to export.")
     else:
         try:
-            if os.path.exists(EXCEL_FILENAME):
-                existing = pd.read_excel(EXCEL_FILENAME)
+            if os.path.exists(export_filename):
+                existing = pd.read_excel(export_filename)
                 combined = pd.concat([existing, df], ignore_index=True)
                 combined.drop_duplicates(inplace=True)
-                combined.to_excel(EXCEL_FILENAME, index=False)
+                combined.to_excel(export_filename, index=False)
             else:
-                df.to_excel(EXCEL_FILENAME, index=False)
-            st.success(f"✅ Data exported to `{EXCEL_FILENAME}`.")
+                df.to_excel(export_filename, index=False)
+            st.success(f"✅ Data exported to `{export_filename}`.")
         except Exception as e:
             st.error(f"❌ Failed to export data: {e}")
 
-# ---------- CLEAR ENTRIES ----------
 elif menu == "🗑️ Clear Entries":
     st.subheader("⚠️ Clear All Entries")
     if st.button("Clear All Data Now"):
@@ -127,7 +121,6 @@ elif menu == "🗑️ Clear Entries":
             os.remove(EXCEL_FILENAME)
         st.success("🗑️ All entries have been cleared.")
 
-# ---------- ABOUT ----------
 elif menu == "ℹ️ About App":
     st.subheader("ℹ️ About MindEase")
     st.markdown("""
