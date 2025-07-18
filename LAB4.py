@@ -15,7 +15,7 @@ st.markdown(
     "Track your wellness, screen-free time, and healthy habits with this simple and intuitive app. 🌿"
 )
 
-EXCEL_FILENAME = "mind_ease_log.xlsx"
+EXCEL_FILENAME = "mental_wellness_log_20250704_172222.xlsx"
 FREQ_OPTIONS = ["Daily", "2-3 times/week", "Once a week", "Rarely"]
 
 def check_status(minutes):
@@ -93,7 +93,6 @@ elif menu == "📁 Export Data":
     st.subheader("📁 Export Entries to Excel")
     df = st.session_state.records
 
-    export_filename = "mental_wellness_log_20250704_172222.xlsx"
 
     if df.empty:
         st.warning("⚠️ No entries to export.")
